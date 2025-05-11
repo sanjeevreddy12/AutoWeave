@@ -77,18 +77,24 @@ importers:
         specifier: 5.8.2
         version: 5.8.2
 
+  apps/worker:
+    dependencies:
+      kafkajs:
+        specifier: ^2.2.4
+        version: 2.2.4
+
   packages/db:
     dependencies:
       '@prisma/client':
         specifier: ^6.7.0
         version: 6.7.0(prisma@6.7.0(typescript@5.8.2))(typescript@5.8.2)
-      prisma:
-        specifier: ^6.7.0
-        version: 6.7.0(typescript@5.8.2)
     devDependencies:
       '@types/node':
         specifier: ^22.15.17
         version: 22.15.17
+      prisma:
+        specifier: ^6.7.0
+        version: 6.7.0(typescript@5.8.2)
 
   packages/eslint-config:
     devDependencies:
