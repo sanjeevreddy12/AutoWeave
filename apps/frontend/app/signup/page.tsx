@@ -3,8 +3,16 @@ import { Appbar } from "@/components/Appbar";
 import { PrimaryButton } from "@/components/buttons/PrimaryButton";
 import { CheckFeature } from "@/components/CheckFeature";
 import { Input } from "@/components/Input";
+import { BACKEND_URL } from "@/config";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import axios from "axios";
 
 export default function () {
+    const router = useRouter();
+    const [email, setemail] = useState("");
+    const [name, setname] = useState("");
+    const [password, setpassword] = useState("");
     return <div>
         <Appbar />
         <div className="flex justify-center">
@@ -26,12 +34,21 @@ export default function () {
                     <CheckFeature label="14-day trial of premium features" />
                 </div>
 
-                <div className="flex-1 pt-6 pb-6 mt-12 px-4 border rounded">
-                    <Input label="Email" type="text" placeholder="Email" onChange={(e) => { }}></Input >
-                    <Input label="Name" type="text" placeholder="Your Name" onChange={(e) => { }}></Input >
-                    <Input label="Password" type="password" placeholder="Password" onChange={(e) => { }}></Input >
+                <div className="flex-1 pt-6 pb-6 mt-12 px-4 border  border-slate-200 rounded">
+                    <Input label="Email" type="text" placeholder="Email" onChange={(e) => { setemail(e.target.value) }}></Input >
+                    <Input label="Name" type="text" placeholder="Your Name" onChange={(e) => { setname(e.target.value)}}></Input >
+                    <Input label="Password" type="password" placeholder="Password" onChange={(e) => { setpassword(e.target.value)}}></Input >
                     <div className="pt-4">
-                        <PrimaryButton size="big" onClick={() => { }}>Get Started free</PrimaryButton>
+                        <PrimaryButton size="big" onClick={async () => {
+                            const res = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, {
+                                username: email,
+                                name,
+                                password,
+                            })
+                            
+                            
+                              router.push("/login")
+                        }}>Get Started free</PrimaryButton>
                     </div>
 
                 </div>

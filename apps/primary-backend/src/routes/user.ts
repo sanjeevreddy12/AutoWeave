@@ -32,12 +32,12 @@ router.post("/signup", async (req , res )=> {
     }
     console.time("signup");
     const token = generatetoken();
-    const hashedpass = await bcrypt.hash(parsedbody.data.password,6);
+    const hashedpass = await bcrypt.hash(parsedbody.data.password,5);
     const user = await prismaclient.user.create({
         data : {
             email : parsedbody.data.username,
             password : hashedpass,
-            name : parsedbody.data.username,
+            name : parsedbody.data.name,
             verificationToken : token,
             verificationTokenExpiry : new Date(Date.now() + 24*60*60*1000),
             isVerified : false
