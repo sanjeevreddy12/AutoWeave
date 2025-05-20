@@ -1,5 +1,8 @@
+require("dotenv").config();
 import { Kafka } from "kafkajs";
-import prisma from "@repo/db"
+import prisma, { JsonObject } from "@repo/db"
+import { Parse } from "./parser";
+import { sendEmail } from "./email";
 const TOPIC_NAME = "zap-events"
 
 const kafka = new Kafka({
@@ -56,8 +59,14 @@ async function main()
                 return;
             }
             if (currentaction.type.id === "email") {
+                const zapRunMetadata = zapRundetails?.metadata; 
                 
+                const body = Parse((currentaction.metadata as JsonObject)?.body as string,zapRunMetadata);
+                const to = Parse((currentaction.metadata as JsonObject)?.email as string,zapRunMetadata);
+                console.log(`sending out email to ${to} body is ${body}`)
+                await sendEmail(to, body);
             }
+
             if (currentaction.type.id === "send-sol") {
                 
             }
